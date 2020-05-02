@@ -31,4 +31,4 @@ The overall flow we are looking for here is as follows:
 * The text file that gets generated on the WorkerServer can be placed in the same folder it runs in, and its name can be randomized.
 
 ### If you have any questions at all, please email danny@aireverie.com
-This challenge was written up in one day and is prone to not being fully descriptive. I've done my best to write out everything, and feel free to fill in the blanks. All we are looking for is this communication between all 3 parts. How you get there is up to you. But if you have questions, do not hesitate to reach out and I will be more than happy to answer them.
+This challenge was written up in one day and is prone to not being fully descriptive. I've done my best to write out everything, but feel free to fill in the blanks. All we are looking for is this communication between all 3 parts. How you get there is up to you. But if you have questions, do not hesitate to reach out and I will be more than happy to answer them. I want to make sure you have all of the information you need to complete this challenge.

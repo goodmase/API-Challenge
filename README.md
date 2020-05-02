@@ -13,7 +13,7 @@ This is the server which relays job information to a WorkerServer. Normally, thi
 This is the server that actually does work. In our case, it will just write a string to a text file. This WorkerServer and the Python never communicate directly, and only communicate through the MasterServer
 
 ## Goal
-We would like you to create a system in which a python request can be made containing a string as a parameter, and that string will be written to a text file on a WorkerServer. The python is only allowed to interact with the MasterServer, and then MasterServer and WorkerServer must be able to communicate back and forth.
+We would like you to create a system in which a python request can be made to a REST API on the MasterServer containing a string as a parameter, and that string will be written to a text file on a WorkerServer. The python is only allowed to interact with the MasterServer, and then MasterServer and WorkerServer must be able to communicate back and forth.
 
 ## Flow
 The overall flow we are looking for here is as follows:

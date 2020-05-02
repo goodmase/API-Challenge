@@ -24,11 +24,11 @@ The overall flow we are looking for here is as follows:
 5. When the MasterServer receives the finished event, it prints the name of the file to the console.
 
 ## Other info
--You may use any language you would like to do this challenge. If you are comfortable with Node.js that is preferred, but it is not a requirement and will not cause you to pass/fail this challenge.
--You should split your code up in the 3 provided folders.
--While all of these would normally be run on different computers, feel free to run them all on your local machine simply using different ports. This is to simulate a distributed system.
--Please wrap the python code in an easy to use "library" that will make the request. By library I only mean at least make a wrapper function for the request to make it easier.
--The text file that gets generated on the WorkerServer can be placed in the same folder it runs in, and its name can be randomized.
+* You may use any language you would like to do this challenge. If you are comfortable with Node.js that is preferred, but it is not a requirement and will not cause you to pass/fail this challenge.
+* You should split your code up in the 3 provided folders.
+* While all of these would normally be run on different computers, feel free to run them all on your local machine simply using different ports. This is to simulate a distributed system.
+* Please wrap the python code in an easy to use "library" that will make the request. By library I only mean at least make a wrapper function for the request to make it easier.
+* The text file that gets generated on the WorkerServer can be placed in the same folder it runs in, and its name can be randomized.
 
 ### If you have any questions at all, please email danny@aireverie.com
 This challenge was written up in one day and is prone to not being fully descriptive. I've done my best to write out everything, and feel free to fill in the blanks. All we are looking for is this communication between all 3 parts. How you get there is up to you. But if you have questions, do not hesitate to reach out and I will be more than happy to answer them.

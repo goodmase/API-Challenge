@@ -24,7 +24,7 @@ The overall flow we are looking for here is as follows:
 5. When the MasterServer receives the finished event, it prints the name of the file to the console.
 
 ## Other info
-* You may use any language you would like to do this challenge. If you are comfortable with Node.js that is preferred, but it is not a requirement and will not cause you to pass/fail this challenge.
+* You may use any language you would like to do this challenge. If you are comfortable with Node.js that is preferred, but it is not a requirement and will not cause you to pass/fail this challenge. (This does not apply to the Python section, that must be written using python.)
 * You should split your code up in the 3 provided folders.
 * While all of these would normally be run on different computers, feel free to run them all on your local machine simply using different ports. This is to simulate a distributed system.
 * Please wrap the python code in an easy to use "library" that will make the request. By library I only mean at least make a wrapper function for the request to make it easier.

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Inject } from '@nestjs/common';
 import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
 import { MessageEntity } from './entities/message.entity';
 import { CreateMessageDto } from './dto/message.dto';
@@ -20,13 +20,21 @@ export class MessageController {
     @Post()
     addMessage(@Body() message: CreateMessageDto) {
       const msg = this.messageService.create(message);
-      this.client.emit('job_created', msg);
+      // job_created
+      this.client.emit(msg.eventName, msg);
       return msg;
     }
   
     @Get(':id')
     getMessageById(@Param('id') id: number) {
-      return this.messageService.query(data => data.id === +id)
+      return this.messageService.get(+id);
+    }
+
+    @Put(':id')
+    editMessage(@Param('id') id: number, @Body() message: CreateMessageDto) {
+      const messageWithId: MessageEntity = {id, ...message};
+      this.messageService.update(messageWithId);
+      return this.messageService.get(+id)
     }
 
     @EventPattern('job_updated')

@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  python-experience-api:
+    build:
+      context: ./python-experience-api
+    ports:
+      - "8000:8000"
+    depends_on: 
+      - node-process-api
+  node-process-api:
+    build:
+      context: ./MasterServer
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - rabbit
+    environment:
+      RABBITMQ_CONNECTION_STRING: 'amqp://guest:guest@rabbit:5672/'
+  node-worker-one:
+    build:
+      context: ./node-worker
+    depends_on: 
+      - rabbit
+    environment:
+      RABBITMQ_CONNECTION_STRING: 'amqp://guest:guest@rabbit:5672/'
+  node-worker-two:
+    build:
+      context: ./node-worker
+    depends_on: 
+      - rabbit
+    environment:
+      RABBITMQ_CONNECTION_STRING: 'amqp://guest:guest@rabbit:5672/'
+  rabbit:
+    image: rabbitmq:3-management
+    ports: 
+      - "8080:15672"
+      - "5672:5672"
+

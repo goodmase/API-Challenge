@@ -18,10 +18,11 @@ export class MessageController {
     }
   
     @Post()
-    addMessage(@Body() message: CreateMessageDto) {
+    async addMessage(@Body() message: CreateMessageDto) {
       const msg = this.messageService.create(message);
-      // job_created
-      this.client.emit(msg.eventName, msg);
+      // job_queue
+      console.log(`sending message: ${JSON.stringify(message)}`);
+      await this.client.emit(msg.eventName, msg);
       return msg;
     }
   
@@ -37,8 +38,8 @@ export class MessageController {
       return this.messageService.get(+id)
     }
 
-    @EventPattern('job_updated')
-    async updateMessage(message: MessageEntity) {
-      await this.messageService.updateAsync(message);
-    }
+    // @EventPattern('job_updated')
+    // async updateMessage(message: MessageEntity) {
+    //   await this.messageService.updateAsync(message);
+    // }
 }

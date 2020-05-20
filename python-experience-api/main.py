@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import requests
@@ -27,6 +28,19 @@ def handle_message_api_response(message_response: dict) -> JobResponse:
         "status": message_response.get("status", "unknown"),
         "id": message_response.get("id", -1),
     }
+
+
+@app.get("/job/", response_model=List[JobResponse])
+def list_item() -> List[JobResponse]:
+    """
+    Get all jobs
+    """
+    url = "/".join([JOB_SERVER_BASE_URL, "message"])
+    req = requests.get(url)
+    if req.status_code != 200:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    response = req.json()
+    return list(map(handle_message_api_response, req.json()))
 
 
 @app.get("/job/{job_id}", response_model=JobResponse)

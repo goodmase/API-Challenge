@@ -6,8 +6,10 @@ To start all the services run `docker-compose up`
     * username: guest
     * password: guest
 
-# Usage
+# Demo
 1. Navigate to `http://localhost:8000/`
 2. Submit a job (example is for 10s) and view the logs.
 `curl -X POST "http://localhost:8000/job/" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"name\":\"hello world!\",\"work_length_ms\":10000}"`
 3. Submit a 2nd job. The job should be done by the 2nd worker.
+4. Submit n number of jobs.
+5. view all jobs and their current status `curl -X GET "http://localhost:8000/job/" -H "accept: application/json"`

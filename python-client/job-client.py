@@ -21,13 +21,13 @@ class JobClient(object):
         """
         self.base_url = base_url
 
-    def _create_job_req_url(self, job_id: int = 0):
+    def _create_job_req_url(self, job_id: int = 0) -> str:
         if job_id > 0:
             return f"{JOB_SERVER_BASE_URL}/job/{job_id}/"
         else:
             return f"{JOB_SERVER_BASE_URL}/job/"
 
-    def _send_request(self, req):
+    def _send_request(self, req) -> any:
         with urllib.request.urlopen(req) as resp:
             return json.loads(resp.read().decode("utf-8"))
 

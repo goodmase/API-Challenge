@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Put, Body, Param, Inject } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
-import { MessageEntity } from './entities/message.entity';
+import { MessageEntity, JobStatus } from './entities/message.entity';
 import { CreateMessageDto } from './dto/message.dto';
 import { ClientProxy, EventPattern } from '@nestjs/microservices';
 
@@ -19,27 +19,26 @@ export class MessageController {
   
     @Post()
     async addMessage(@Body() message: CreateMessageDto) {
-      const msg = this.messageService.create(message);
+      // if status not supplied add it.
+      const msg = this.messageService.create({status: JobStatus.Created, ...message});
       // job_queue
-      console.log(`sending message: ${JSON.stringify(message)}`);
+      console.log(`Sending message: ${JSON.stringify(message)}`);
       await this.client.emit(msg.eventName, msg);
       return msg;
     }
   
     @Get(':id')
-    getMessageById(@Param('id') id: number) {
-      return this.messageService.get(+id);
+    async getMessageById(@Param('id') id: number) {
+      const message = await this.messageService.get(+id);
+      if (message === undefined) {
+        throw new HttpException(`Message id ${id} not found`, HttpStatus.NOT_FOUND);
+      }
+      return message;
     }
 
-    @Put(':id')
-    editMessage(@Param('id') id: number, @Body() message: CreateMessageDto) {
-      const messageWithId: MessageEntity = {id, ...message};
-      this.messageService.update(messageWithId);
-      return this.messageService.get(+id)
+    @EventPattern('job_queue_update')
+    async updateMessage(message: MessageEntity) {
+      console.log(`Received updated status: ${message.status} for job_id ${message.id}`)
+      await this.messageService.updateAsync(message);
     }
-
-    // @EventPattern('job_updated')
-    // async updateMessage(message: MessageEntity) {
-    //   await this.messageService.updateAsync(message);
-    // }
 }

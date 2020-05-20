@@ -7,6 +7,8 @@ services:
       - "8000:8000"
     depends_on: 
       - node-process-api
+    environment:
+        JOB_SERVER_BASE_URL: 'http://node-process-api:3000'
   node-process-api:
     build:
       context: ./MasterServer

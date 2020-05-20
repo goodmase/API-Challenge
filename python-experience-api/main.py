@@ -1,29 +1,61 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-from uuid import UUID, uuid4
+import requests
+import os
+
+JOB_SERVER_BASE_URL = os.getenv("JOB_SERVER_BASE_URL", "http://localhost:3000")
 
 app = FastAPI()
 
+
 class JobRequest(BaseModel):
-    name: str = Field(description="Name of the job", max_length="255")
-    work_length_ms: int = Field(default=1000, gt=-1, lt=10000, description="Length of time in ms you want to job to run")
- 
+    name: str = Field("job", description="Name of the job", max_length=255)
+    work_length_ms: int = Field(
+        1000, ge=0, le=10000, description="Length of time in ms you want to job to run"
+    )
+
+
 class JobResponse(JobRequest):
-    uuid: UUID
+    id: int
     status: str
 
-@app.get("/job/{job_uuid}")
-def read_item(job_uuid: UUID) -> JobResponse:
+
+def handle_message_api_response(message_response: dict) -> JobResponse:
+    return {
+        "name": message_response.get("name", ""),
+        "work_length_ms": message_response.get("message", {}).get("workLengthMs", -1),
+        "status": message_response.get("status", "unknown"),
+        "id": message_response.get("id", -1),
+    }
+
+
+@app.get("/job/{job_id}", response_model=JobResponse)
+def read_item(job_id: int) -> JobResponse:
     """
-    Get a job
+    Get a job by id
     """
-    # TODO Fetch job from process api
-    return {"uuid": job_uuid, "name": "job_name", "work_length_ms": -1, "status": "unknown"}
+    url = "/".join([JOB_SERVER_BASE_URL, "message", str(id)])
+    req = requests.get(url)
+    if req.status_code == 404:
+        raise HTTPException(status_code=404, detail="Not found")
+    elif req.status_code != 200:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+    return handle_message_api_response(req.json())
+
 
 @app.post("/job/", response_model=JobResponse)
 def create_item(job: JobRequest) -> JobResponse:
     """
-    Create a job
+    Create a job that runs for x ms
     """
-    # TODO Send job to process api
-    return {"uuid": uuid4(), "name": job.name, "work_length_ms": job.work_length_ms, "status": "accepted"}
+    payload = {
+        "name": job.name,
+        "eventName": "job_queue",
+        "message": {"workLengthMs": job.work_length_ms},
+    }
+    url = "/".join([JOB_SERVER_BASE_URL, "message"])
+    req = requests.post(url, json=payload)
+    if req.status_code != 201:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    return handle_message_api_response(req.json())

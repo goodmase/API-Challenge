@@ -5,7 +5,7 @@ import requests
 from schemas.job import JobRequest, JobResponse
 
 
-JOB_SERVER_BASE_URL = os.getenv("JOB_SERVER_BASE_URL", "http://localhost:3000")
+MESSAGE_SERVER_BASE_URL = os.getenv("MESSAGE_SERVER_BASE_URL", "http://localhost:3000")
 
 app = FastAPI()
 
@@ -24,7 +24,7 @@ def list_item() -> List[JobResponse]:
     """
     Get all jobs
     """
-    url = "/".join([JOB_SERVER_BASE_URL, "message"])
+    url = "/".join([MESSAGE_SERVER_BASE_URL, "message"])
     req = requests.get(url)
     if req.status_code != 200:
         raise HTTPException(status_code=500, detail="Internal Server Error")
@@ -37,7 +37,7 @@ def read_item(job_id: int) -> JobResponse:
     """
     Get a job by id
     """
-    url = "/".join([JOB_SERVER_BASE_URL, "message", str(id)])
+    url = "/".join([MESSAGE_SERVER_BASE_URL, "message", str(job_id)])
     req = requests.get(url)
     if req.status_code == 404:
         raise HTTPException(status_code=404, detail="Not found")
@@ -57,7 +57,7 @@ def create_item(job: JobRequest) -> JobResponse:
         "eventName": "job_queue",
         "message": {"workLengthMs": job.work_length_ms},
     }
-    url = "/".join([JOB_SERVER_BASE_URL, "message"])
+    url = "/".join([MESSAGE_SERVER_BASE_URL, "message"])
     req = requests.post(url, json=payload)
     if req.status_code != 201:
         raise HTTPException(status_code=500, detail="Internal Server Error")

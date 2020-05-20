@@ -14,6 +14,9 @@ To start all the services run `docker-compose up`
 4. Submit n number of jobs.
 5. view all jobs and their current status `curl -X GET "http://localhost:8000/job/" -H "accept: application/json"`
 
+# Python Client Demo
+`python3 ./python-client/job-client.py`
+
 # Info
 ## python-experience-api
 The experience api exposed to end users. 

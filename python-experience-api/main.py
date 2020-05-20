@@ -1,24 +1,13 @@
+import os
 from typing import List
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
 import requests
-import os
+from schemas.job import JobRequest, JobResponse
+
 
 JOB_SERVER_BASE_URL = os.getenv("JOB_SERVER_BASE_URL", "http://localhost:3000")
 
 app = FastAPI()
-
-
-class JobRequest(BaseModel):
-    name: str = Field("job", description="Name of the job", max_length=255)
-    work_length_ms: int = Field(
-        1000, ge=0, le=10000, description="Length of time in ms you want to job to run"
-    )
-
-
-class JobResponse(JobRequest):
-    id: int
-    status: str
 
 
 def handle_message_api_response(message_response: dict) -> JobResponse:

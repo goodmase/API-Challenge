@@ -13,3 +13,13 @@ To start all the services run `docker-compose up`
 3. Submit a 2nd job. The job should be done by the 2nd worker.
 4. Submit n number of jobs.
 5. view all jobs and their current status `curl -X GET "http://localhost:8000/job/" -H "accept: application/json"`
+
+# Info
+## python-experience-api
+The experience api exposed to end users. 
+## node-process-api
+A message server that allows you to send generic messages to a specified event listener on a queue.
+The experience api leverages this to send a job to the event_listeners "job_queue"
+## node-worker
+A worker server that can scale to any number of workers. These workers listen to events on "job_queue"
+and send updates to "job_queue_update"

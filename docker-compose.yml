@@ -11,7 +11,7 @@ services:
         JOB_SERVER_BASE_URL: 'http://node-process-api:3000'
   node-process-api:
     build:
-      context: ./MasterServer
+      context: ./node-process-api
     ports:
       - "3000:3000"
     depends_on: 

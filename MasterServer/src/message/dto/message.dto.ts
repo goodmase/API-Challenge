@@ -11,7 +11,6 @@ export class CreateMessageDto {
   @ApiProperty()
   message: JSON;
 
-  @ApiProperty({default: JobStatus.Created, enum: JobStatus})
-  status: JobStatus; 
-
+  @ApiProperty({ default: JobStatus.Created, enum: JobStatus })
+  status: JobStatus;
 }

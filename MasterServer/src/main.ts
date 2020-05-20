@@ -3,7 +3,9 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 
-const RABBITMQ_CONNECTION_STRING = process.env.RABBITMQ_CONNECTION_STRING || 'amqp://guest:guest@localhost:5672/';
+const RABBITMQ_CONNECTION_STRING =
+  process.env.RABBITMQ_CONNECTION_STRING ||
+  'amqp://guest:guest@localhost:5672/';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,13 +20,13 @@ async function bootstrap() {
 
   const microserviceTcp = app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
-    options: { 
+    options: {
       urls: [RABBITMQ_CONNECTION_STRING],
       queue: 'user-messages-update',
-      queueOptions: { 
-         durable: false
-        },
-       },
+      queueOptions: {
+        durable: false,
+      },
+    },
   });
   await app.startAllMicroservicesAsync();
   await app.listen(3000);
